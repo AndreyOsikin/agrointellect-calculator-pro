@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>АГРОИНТЕЛЛЕКТ — Калькулятор стоимости</title>
 <meta name="description" content="Калькулятор стоимости продуктов Агроинтеллект">
-<link rel="stylesheet" href="styles.css?v=workspace-20261008b">
+<link rel="stylesheet" href="styles.css?v=systems-20261008">
 <link rel="icon" href="assets/logo.png">
 <meta name="theme-color" content="#0a73f5">
 </head>
@@ -17,6 +17,7 @@
 </header>
 
 
+<div id="aiParking" hidden><div class="option-card ai-config hidden" id="aiSection"><div class="option-heading"><strong>Пользователи с ИИ‑помощником</strong><span>Общее количество для всех площадок.</span></div><div class="option-footer"><span class="option-price" id="aiUnitPrice"></span><div class="stepper"><button onclick="step('aiUsers',-1)">−</button><input id="aiUsers" aria-label="Пользователи с ИИ-помощником" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('aiUsers',1)">+</button></div></div></div></div>
 <div class="layout">
 <main class="stack">
 <section class="glass product-section">
@@ -26,22 +27,22 @@
     <div class="product-card" id="card-musoft" onclick="cardToggle(event,'musoft')"><div class="product-icon">◇</div><div class="product-copy"><h3>Мусофт</h3><p>Управление стадом и рабочие процессы</p><span class="product-badge">Тариф по поголовью</span></div><label class="switch" onclick="event.stopPropagation()"><input id="product-musoft" aria-label="Мусофт" type="checkbox" onchange="setProduct('musoft',this.checked)"><span class="switch-track"></span></label></div>
     <div class="product-card" id="card-milk" onclick="cardToggle(event,'milk')"><div class="product-icon">●</div><div class="product-copy"><h3>Учёт молока</h3><p>Надои, движение, качество и реализация</p><span class="product-badge">Тариф по поголовью</span></div><label class="switch" onclick="event.stopPropagation()"><input id="product-milk" aria-label="Учёт молока" type="checkbox" onchange="setProduct('milk',this.checked)"><span class="switch-track"></span></label></div>
   </div>
-    <div class="ai-config hidden" id="aiSection"><div class="counter-row"><div><strong>Пользователи с ИИ‑помощником</strong><span>Количество пользователей с ИИ для всех площадок.</span></div><div class="stepper"><button onclick="step('aiUsers',-1)">−</button><input id="aiUsers" aria-label="Пользователи с ИИ-помощником" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('aiUsers',1)">+</button></div></div></div>
 </section>
 
-  <section class="glass section" id="paymentSection">
-    <div class="section-head"><div class="section-title"><div class="section-icon">02</div><div><h2>Формат оплаты</h2><p>Стоимость зависит от выбранного способа оплаты.</p></div></div></div>
-    <div class="payment-toggle"><button class="pay-option active" id="payAnnual" onclick="setPayment('annual')"><strong>Предоплата за год</strong><span>Платёж сразу за 12 месяцев</span></button><button class="pay-option" id="payMonthly" onclick="setPayment('monthly')"><strong>Помесячная оплата</strong><span>Онлайн‑ферма и ИИ +20% · оплата каждый месяц</span></button></div>
-  </section>
+
 
   <section class="glass section" id="farmsSection">
-    <div class="section-head"><div class="section-title"><div class="section-icon">03</div><div><h2>Площадки и параметры</h2><p>Укажите площадки и подключаемые системы.</p></div></div><button class="btn small primary" onclick="addFarm()">+ Добавить ферму</button></div>
+    <div class="section-head"><div class="section-title"><div class="section-icon">02</div><div><h2>Площадки и параметры</h2><p>Укажите площадки и подключаемые системы.</p></div></div><button class="btn small primary" onclick="addFarm()">+ Добавить ферму</button></div>
     <div id="noProducts" class="empty-state"><div class="empty-icon">＋</div><strong>Сначала выберите продукт</strong><span>Включите Онлайн‑ферму, Мусофт или Учёт молока выше — карточки расчёта появятся автоматически.</span></div>
     <div class="stack hidden" id="farms"></div>
 
   </section>
 
 
+  <section class="glass section" id="paymentSection">
+    <div class="section-head"><div class="section-title"><div class="section-icon">03</div><div><h2>Формат оплаты</h2><p>Стоимость зависит от выбранного способа оплаты.</p></div></div></div>
+    <div class="payment-toggle" role="radiogroup" aria-label="Формат оплаты"><label class="pay-option system active" id="payAnnual"><div class="system-copy"><strong>Предоплата за год</strong><span data-payment-description>Платёж сразу за 12 месяцев</span></div><span class="switch"><input id="payment-annual" aria-label="Предоплата за год" name="paymentMode" value="annual" type="radio" checked onchange="setPayment('annual')"><span class="switch-track"></span></span></label><label class="pay-option system" id="payMonthly"><div class="system-copy"><strong>Помесячная оплата</strong><span data-payment-description>Оплата каждый месяц</span></div><span class="switch"><input id="payment-monthly" aria-label="Помесячная оплата" name="paymentMode" value="monthly" type="radio" onchange="setPayment('monthly')"><span class="switch-track"></span></span></label></div>
+  </section>
 </main>
 
 <aside class="sidebar">
@@ -88,8 +89,8 @@
 </div>
 </div>
 
-<div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Персональные условия</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Укажите персональную скидку для текущего расчёта. Она будет автоматически отражена в итоговой стоимости.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
+<div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Условия расчёта</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Скидка применяется ко всему расчёту после подтверждения.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="btn discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="btn discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="app.js?v=workspace-20261008" defer></script>
+<script src="app.js?v=systems-20261008" defer></script>
 </body>
 </html>

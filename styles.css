@@ -1634,3 +1634,48 @@ h1 {
 @media(max-width:1299px){.product-grid{grid-template-columns:1fr}.product-card{min-height:76px;padding:12px 16px;row-gap:4px}.product-copy p{grid-column:1;grid-row:2}.product-card .switch{grid-row:1/3}}
 @media(max-width:600px){.product-section,.section{padding:18px}.ai-config .counter-row{grid-template-columns:minmax(0,1fr) auto}.product-copy h3{font-size:18px}.pay-option{padding:14px 40px 14px 14px}}
 @media(max-width:360px){.ai-config .counter-row{grid-template-columns:1fr}}
+
+/* Online services and payment share the same cards and switch controls. */
+.online-addons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.online-addons.single{grid-template-columns:1fr}
+.ai-slot{display:contents}
+#aiSection:not(.hidden){animation:none}
+.option-card{min-width:0;display:flex;flex-direction:column;gap:14px;padding:14px;border:1px solid var(--line);border-radius:var(--card-radius);background:var(--surface-soft);transition:border-color var(--motion-fast) var(--ease),background-color var(--motion-fast) var(--ease),box-shadow var(--motion-fast) var(--ease)}
+.option-card:hover{border-color:var(--line-active);background:#fff;box-shadow:var(--shadow-card)}
+.option-card.active{border-color:var(--line-active);background:linear-gradient(145deg,#edf6ff,#ffffff)}
+.online-addons .ai-config,.online-addons .extra-wrap{margin:0;padding:14px}
+.option-heading strong{display:block;font-size:16px;line-height:1.35}
+.option-heading span{display:block;font-size:14px;color:var(--muted);line-height:1.45;margin-top:4px}
+.option-footer{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:auto}
+.option-price{font-size:14px;font-weight:800;color:var(--blue);line-height:1.4}
+.extra-wrap .subblock-title{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:0}
+.extra-wrap .subblock-title span{text-align:left;font-size:14px;font-weight:800;color:var(--blue)}
+.extra-wrap .extra-line{margin-top:auto;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+.extra-wrap .extra-line input{font-size:14px}
+.extra-wrap .chips{margin-top:0}
+.payment-toggle{padding:0;border:0;background:none;box-shadow:none;gap:12px}
+.pay-option.system{cursor:pointer;grid-template-columns:minmax(0,1fr) 40px;text-align:left;padding:14px;min-height:98px;color:var(--text);font-weight:400}
+.pay-option:after{display:none}
+.pay-option .switch,.pay-option .switch-track{margin:0}
+.pay-option .switch{cursor:pointer}
+.pay-option.system strong{font-size:16px}
+.discount-card{width:min(480px,100%);background:var(--surface);border:1px solid var(--line);border-radius:var(--section-radius);box-shadow:var(--shadow-card),0 24px 80px rgba(13,41,70,.18)}
+.discount-card-inner{padding:24px}
+.discount-symbol{width:48px;height:48px;border:1px solid var(--line2);border-radius:var(--control-radius);background:var(--surface-soft);color:var(--blue);box-shadow:none;font-size:24px}
+.discount-close{width:40px;height:40px;border-radius:var(--control-radius);border-color:var(--line2);background:var(--surface-soft);font-size:24px}
+.discount-kicker{color:var(--muted);font-size:12px;letter-spacing:.06em;margin-top:18px}
+.discount-title{font-size:26px;line-height:1.2;color:var(--text);margin-top:8px}
+.discount-subtitle{font-size:15px;line-height:1.5;color:var(--muted);margin-top:10px}
+.discount-form{padding:16px;border:1px solid var(--line);border-radius:var(--card-radius);background:var(--surface-soft);margin-top:20px}
+.discount-form label{font-size:15px;color:var(--text)}
+.discount-input-wrap input{height:48px;font-size:24px;border-radius:var(--control-radius);background:#fff;color:var(--text);box-shadow:none;appearance:textfield;-moz-appearance:textfield}
+.discount-input-wrap input::-webkit-inner-spin-button,.discount-input-wrap input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.discount-suffix{font-size:20px;color:var(--blue)}
+.discount-help{font-size:13px;color:var(--muted);line-height:1.4}
+.discount-actions{grid-template-columns:1fr;gap:10px;margin-top:18px}
+.discount-btn.btn{font-size:15px;height:46px;padding:0 16px;border-radius:var(--control-radius)}
+.discount-btn.btn.primary{order:-1;background:linear-gradient(135deg,#0a73f5,#3298fa);border-color:var(--blue);color:#fff}
+.discount-btn.btn.secondary{background:#fff;color:var(--text);border-color:var(--line2);box-shadow:none}
+@media(max-width:1200px){.online-addons{grid-template-columns:1fr}}
+@media(max-width:600px){.discount-card-inner{padding:20px}.discount-title{font-size:24px}.pay-option.system{padding:14px}.online-addons{grid-template-columns:1fr}}
+@media(max-width:360px){.extra-wrap .extra-line{grid-template-columns:1fr}.extra-wrap .extra-line .btn{width:100%}}
