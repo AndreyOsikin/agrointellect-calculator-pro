@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>АГРОИНТЕЛЛЕКТ — Калькулятор стоимости</title>
 <meta name="description" content="Калькулятор стоимости продуктов Агроинтеллект">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=layout-20261008">
 <link rel="icon" href="assets/logo.png">
 <meta name="theme-color" content="#0a73f5">
 </head>
@@ -93,6 +93,6 @@
 
 <div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Персональные условия</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Укажите персональную скидку для текущего расчёта. Она будет автоматически отражена в итоговой стоимости.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="app.js" defer></script>
+<script src="app.js?v=layout-20261008" defer></script>
 </body>
 </html>

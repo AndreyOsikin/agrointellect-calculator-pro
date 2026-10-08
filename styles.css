@@ -228,17 +228,32 @@ h1 {
 
 .section-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 18px;
 }
 
 .section-title {
+  min-width: 0;
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 11px;
 }
+
+.section-head > .btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.section, .farm-card, .settings {
+  scroll-margin-top: 112px;
+}
+
+
+
+
 
 .section-icon {
   width: 38px;
@@ -1551,3 +1566,18 @@ h1 {
 }
 @media(max-width:360px){.counter-row{grid-template-columns:1fr}.money-main .value{font-size:40px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+@media(min-width:1600px) {
+  .section-head p, .product-card p, .system span,
+  .counter-row span, .farm-title span, .farm-price span,
+  .subblock-title span, .pay-option span { font-size: 15px; }
+}
+@media(max-width:1400px) {
+  .topbar { position: relative; top: 0; }
+  .sidebar { top: 22px; }
+  .section, .farm-card, .settings { scroll-margin-top: 24px; }
+}
+
+@media(min-width:901px) and (max-width:1400px) {
+  .user-counters { grid-template-columns: 1fr; }
+}
