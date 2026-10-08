@@ -1505,7 +1505,7 @@ h1 {
   transform: none;
 }
 
-#usersSection:not(.hidden) {
+#aiSection:not(.hidden) {
   animation: cardIn var(--motion-normal) var(--ease) both;
 }
 
@@ -1581,3 +1581,29 @@ h1 {
 @media(min-width:901px) and (max-width:1400px) {
   .user-counters { grid-template-columns: 1fr; }
 }
+
+/* Balanced workspace: product selection and global AI settings stay with inputs. */
+.layout{grid-template-columns:minmax(0,1.5fr) minmax(440px,1fr);align-items:start}
+.product-section{margin-bottom:0}
+.product-grid{grid-template-columns:1fr;gap:10px}
+.product-card{min-height:80px;padding:12px 16px}
+.product-badge{display:none}
+.product-copy h3{margin-bottom:4px}
+.ai-config{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.ai-config .counter-row{grid-template-columns:minmax(0,1fr) auto}
+.summary{padding:32px}
+.summary-head span{font-size:16px}
+.summary-head h3{font-size:17px}
+.money-main{padding:30px 0}
+.money-main .label{font-size:18px}
+.money-main .value{font-size:64px;line-height:1.1}
+.money-main .sub,.money-main .sub strong{font-size:20px}
+.sum-line{padding:17px 0}
+.sum-line span{font-size:17px}
+.sum-line strong,.sum-line.secondary-total strong{font-size:19px}
+.summary .fine,.summary .saving{font-size:15px}
+@media(max-width:1200px){.layout{grid-template-columns:minmax(0,1.35fr) minmax(360px,1fr)}.summary{padding:24px}.money-main .value{font-size:52px}.sum-line span{font-size:16px}.sum-line strong,.sum-line.secondary-total strong{font-size:17px}}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.sidebar{position:static}.money-main .value{font-size:56px}.summary{padding:26px}}
+@media(max-width:600px){.summary{padding:20px}.summary-head h3{font-size:15px}.money-main .value{font-size:46px}.money-main .sub,.money-main .sub strong{font-size:18px}.sum-line span{font-size:15px}.sum-line strong,.sum-line.secondary-total strong{font-size:16px}.ai-config .counter-row{grid-template-columns:1fr}.ai-config .stepper{justify-self:start}}
+@media(max-width:360px){.money-main .value{font-size:40px}}
+@media(max-width:600px){.product-section .section-head{display:grid;grid-template-columns:1fr;gap:12px}.product-section .eyebrow{justify-self:start}}
