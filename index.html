@@ -40,8 +40,10 @@
 
   <section class="glass section hidden" id="usersSection">
     <div class="section-head"><div class="section-title"><div class="section-icon">04</div><div><h2>Пользователи Онлайн‑фермы</h2><p>Обычные аккаунты без ИИ не увеличивают стоимость.</p></div></div></div>
+    <div class="user-counters">
     <div class="counter-row"><div><strong>Пользователи с ИИ‑помощником</strong><span>Доступ к вопросам по данным фермы, сводкам и аналитическим разборам.</span></div><div class="stepper"><button onclick="step('aiUsers',-1)">−</button><input id="aiUsers" aria-label="Пользователи с ИИ-помощником" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('aiUsers',1)">+</button></div></div>
     <div class="counter-row"><div><strong>Обычные пользователи</strong><span>Дополнительная стоимость — 0 ₽.</span></div><div class="stepper"><button onclick="step('regularUsers',-1)">−</button><input id="regularUsers" aria-label="Обычные пользователи" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('regularUsers',1)">+</button></div></div>
+    </div>
   </section>
 </main>
 
