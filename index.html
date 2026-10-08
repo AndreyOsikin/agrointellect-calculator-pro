@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>АГРОИНТЕЛЛЕКТ — Калькулятор стоимости</title>
+<meta name="description" content="Калькулятор стоимости продуктов Агроинтеллект">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/logo.png">
+<meta name="theme-color" content="#0a73f5">
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+  <div class="brand"><div class="brand-logo"><img src="assets/logo.png" alt="АГРОИНТЕЛЛЕКТ"></div><div><strong>АГРОИНТЕЛЛЕКТ</strong><span>Калькулятор стоимости</span></div></div>
+  <div class="top-actions"><button class="discount-launch" id="discountLaunch" onclick="openDiscountModal()"><div><b>Скидка</b><span id="discountLaunchText">Не задана</span></div><div class="discount-chip" id="discountLaunchChip">0%</div></button><button class="btn" onclick="openProposal()">Коммерческое предложение</button><button class="btn primary" onclick="resetAll()">Новый расчёт</button></div>
+</header>
+
+<section class="glass product-section">
+  <div class="section-head"><div class="section-title"><div class="section-icon">01</div><div><h2>Выберите продукты</h2><p>Включите один или несколько продуктов — ниже появятся только нужные параметры.</p></div></div><div id="selectionLabel" class="eyebrow">Ничего не выбрано</div></div>
+  <div class="product-grid">
+    <div class="product-card" id="card-online" onclick="cardToggle(event,'online')"><div class="product-icon">▥</div><div class="product-copy"><h3>Онлайн‑ферма</h3><p>Аналитика, интеграции, отчёты и ИИ</p><span class="product-badge">Новая модель тарификации</span></div><label class="switch" onclick="event.stopPropagation()"><input id="product-online" aria-label="Онлайн-ферма" type="checkbox" onchange="setProduct('online',this.checked)"><span class="switch-track"></span></label></div>
+    <div class="product-card" id="card-musoft" onclick="cardToggle(event,'musoft')"><div class="product-icon">◇</div><div class="product-copy"><h3>Мусофт</h3><p>Управление стадом и рабочие процессы</p><span class="product-badge">Тариф по поголовью</span></div><label class="switch" onclick="event.stopPropagation()"><input id="product-musoft" aria-label="Мусофт" type="checkbox" onchange="setProduct('musoft',this.checked)"><span class="switch-track"></span></label></div>
+    <div class="product-card" id="card-milk" onclick="cardToggle(event,'milk')"><div class="product-icon">●</div><div class="product-copy"><h3>Учёт молока</h3><p>Надои, движение, качество и реализация</p><span class="product-badge">Тариф по поголовью</span></div><label class="switch" onclick="event.stopPropagation()"><input id="product-milk" aria-label="Учёт молока" type="checkbox" onchange="setProduct('milk',this.checked)"><span class="switch-track"></span></label></div>
+  </div>
+</section>
+
+<div class="layout">
+<main class="stack">
+  <section class="glass section" id="clientSection">
+    <div class="section-head"><div class="section-title"><div class="section-icon">02</div><div><h2>Клиент и условия</h2><p>Данные используются в коммерческом предложении.</p></div></div></div>
+    <div class="form-grid">
+      <div class="field"><label for="clientName">Клиент</label><input id="clientName" maxlength="200" placeholder="Например, ООО «Агрофирма»" oninput="recalc()"></div>
+      <div class="field"><label for="contactName">Контактное лицо</label><input id="contactName" maxlength="200" placeholder="Имя, должность" oninput="recalc()"></div>
+      <div class="field"><label for="clientEmail">E-mail клиента</label><input id="clientEmail" maxlength="200" type="email" placeholder="client@company.ru" oninput="recalc()"></div>
+      <div class="field"><label for="managerName">Менеджер</label><input id="managerName" maxlength="200" placeholder="ФИО менеджера" oninput="recalc()"></div>
+      <div class="field full payment-field"><label>Формат оплаты</label><div class="payment-toggle"><button class="pay-option active" id="payAnnual" onclick="setPayment('annual')"><strong>Предоплата за год</strong><span>Базовая стоимость · платёж сразу за 12 месяцев</span></button><button class="pay-option" id="payMonthly" onclick="setPayment('monthly')"><strong>Помесячная оплата</strong><span>Онлайн‑ферма и ИИ +20% · оплата каждый месяц</span></button></div></div>
+    </div>
+  </section>
+
+  <section class="glass section" id="farmsSection">
+    <div class="section-head"><div class="section-title"><div class="section-icon">03</div><div><h2>Площадки и параметры</h2><p>Для каждой фермы рассчитывается свой состав продуктов и подключений.</p></div></div><button class="btn small primary" onclick="addFarm()">+ Добавить ферму</button></div>
+    <div id="noProducts" class="empty-state"><div class="empty-icon">＋</div><strong>Сначала выберите продукт</strong><span>Включите Онлайн‑ферму, Мусофт или Учёт молока выше — карточки расчёта появятся автоматически.</span></div>
+    <div class="stack hidden" id="farms"></div>
+  </section>
+
+  <section class="glass section hidden" id="usersSection">
+    <div class="section-head"><div class="section-title"><div class="section-icon">04</div><div><h2>Пользователи Онлайн‑фермы</h2><p>Обычные аккаунты без ИИ не увеличивают стоимость.</p></div></div></div>
+    <div class="counter-row"><div><strong>Пользователи с ИИ‑помощником</strong><span>Доступ к вопросам по данным фермы, сводкам и аналитическим разборам.</span></div><div class="stepper"><button onclick="step('aiUsers',-1)">−</button><input id="aiUsers" aria-label="Пользователи с ИИ-помощником" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('aiUsers',1)">+</button></div></div>
+    <div class="counter-row"><div><strong>Обычные пользователи</strong><span>Указываются для КП. Дополнительная стоимость — 0 ₽.</span></div><div class="stepper"><button onclick="step('regularUsers',-1)">−</button><input id="regularUsers" aria-label="Обычные пользователи" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('regularUsers',1)">+</button></div></div>
+  </section>
+</main>
+
+<aside class="sidebar">
+  <section class="glass summary" id="summaryCard">
+    <div class="summary-head"><span>Итог расчёта</span><h3 id="summaryMode">Предоплата за год</h3></div>
+    <div class="money-main"><div class="label" id="mainMoneyLabel">Стоимость в пересчёте на месяц</div><div class="value" id="monthlyPrice">0 ₽</div><div class="sub" id="mainMoneySub">выберите продукты для расчёта</div></div>
+    <div class="summary-lines">
+      <div class="sum-line hidden" id="lineOnline"><span>Онлайн‑ферма</span><strong id="onlineTotal">0 ₽/мес.</strong></div>
+      <div class="sum-line hidden" id="lineMusoft"><span>Мусофт</span><strong id="musoftTotal">0 ₽/мес.</strong></div>
+      <div class="sum-line hidden" id="lineMilk"><span>Учёт молока</span><strong id="milkTotal">0 ₽/мес.</strong></div>
+      <div class="sum-line hidden" id="lineAI"><span>ИИ‑пользователи</span><strong id="aiTotal">0 ₽/мес.</strong></div>
+      <div class="sum-line discount hidden" id="lineDiscount"><span>Индивидуальная скидка</span><strong id="discountTotal">−0 ₽</strong></div>
+      <div class="sum-line secondary-total"><span id="invoiceLabel">В пересчёте на месяц</span><strong id="invoiceTotal">0 ₽</strong></div>
+      <div class="sum-line"><span>Площадок</span><strong id="farmCount">1</strong></div>
+    </div>
+    <div class="saving" id="saving"></div>
+    <div class="summary-actions"><button class="btn primary" onclick="openProposal()">Сформировать КП</button><button class="btn" onclick="copySummary()">Скопировать расчёт</button><button class="btn" onclick="openEmail()">Открыть письмо</button></div>
+    <button class="btn direct-email" onclick="openSendDialog()">Отправить из калькулятора</button><button class="btn direct-email" onclick="downloadProposal()">Скачать КП в PDF</button><button class="btn direct-email" onclick="shareProposal()">Поделиться файлом</button><div class="fine">Письмо открывается в вашей почтовой программе. PDF можно сохранить и прикрепить позже.</div><div class="fine">Расчёт обновляется автоматически по выбранным продуктам, площадкам и условиям оплаты.</div>
+  </section>
+
+  <details class="glass settings">
+    <summary>Тарифные параметры</summary>
+    <div class="settings-body">
+      <div class="settings-grid">
+        <label>Онлайн‑ферма: минимум / ферма, ₽<input id="sBase" type="number" min="0" value="15000" oninput="settingsChanged()"></label>
+        <label>Доильный зал, ₽<input id="sMilking" type="number" min="0" value="2500" oninput="settingsChanged()"></label>
+        <label>Кормление, ₽<input id="sFeed" type="number" min="0" value="2500" oninput="settingsChanged()"></label>
+        <label>Доп. система, ₽<input id="sExtra" type="number" min="0" value="2500" oninput="settingsChanged()"></label>
+        <label>ИИ‑пользователь, ₽<input id="sAI" type="number" min="0" value="3000" oninput="settingsChanged()"></label>
+        <label>Помесячная наценка Онлайн‑фермы и ИИ, %<input id="sMarkup" max="1000" type="number" min="0" value="20" step="1" oninput="settingsChanged()"></label>
+        <label>Годовая скидка Мусофт / Учёт молока, %<input id="sStandaloneAnnual" max="100" type="number" min="0" value="20" step="1" oninput="settingsChanged()"></label>
+      </div>
+      <div class="tariff-table"><strong>Тарифы по поголовью, ₽/мес.</strong><div class="tariff-row"><span>Категория</span><span>Мусофт</span><span>Учёт молока</span></div>
+        <div class="tariff-row"><span>1–100</span><input id="mu0" aria-label="Мусофт, поголовье 1–100" value="6250" type="number" min="0" oninput="settingsChanged()"><input id="mi0" aria-label="Учёт молока, поголовье 1–100" value="2000" type="number" min="0" oninput="settingsChanged()"></div>
+        <div class="tariff-row"><span>101–500</span><input id="mu1" aria-label="Мусофт, поголовье 101–500" value="18000" type="number" min="0" oninput="settingsChanged()"><input id="mi1" aria-label="Учёт молока, поголовье 101–500" value="4000" type="number" min="0" oninput="settingsChanged()"></div>
+        <div class="tariff-row"><span>501–1000</span><input id="mu2" aria-label="Мусофт, поголовье 501–1000" value="25000" type="number" min="0" oninput="settingsChanged()"><input id="mi2" aria-label="Учёт молока, поголовье 501–1000" value="6250" type="number" min="0" oninput="settingsChanged()"></div>
+        <div class="tariff-row"><span>1001–1500</span><input id="mu3" aria-label="Мусофт, поголовье 1001–1500" value="32000" type="number" min="0" oninput="settingsChanged()"><input id="mi3" aria-label="Учёт молока, поголовье 1001–1500" value="8000" type="number" min="0" oninput="settingsChanged()"></div>
+        <div class="tariff-row"><span>1501–2000</span><input id="mu4" aria-label="Мусофт, поголовье 1501–2000" value="40000" type="number" min="0" oninput="settingsChanged()"><input id="mi4" aria-label="Учёт молока, поголовье 1501–2000" value="10000" type="number" min="0" oninput="settingsChanged()"></div>
+        <div class="tariff-row"><span>&gt; 2000</span><input id="mu5" aria-label="Мусофт, поголовье более 2000" value="50000" type="number" min="0" oninput="settingsChanged()"><input id="mi5" aria-label="Учёт молока, поголовье более 2000" value="12000" type="number" min="0" oninput="settingsChanged()"></div>
+      </div>
+      <div class="settings-note">Параметры можно менять прямо в калькуляторе. Для Мусофт и отдельного Учёта молока используется тарифная категория по поголовью.</div>
+    </div>
+  </details>
+</aside>
+</div>
+</div>
+
+<div class="modal" id="proposalModal" role="dialog" aria-modal="true" aria-label="Коммерческое предложение" tabindex="-1" onclick="modalBackdrop(event)"><div class="modal-card"><div class="modal-head"><strong>Коммерческое предложение</strong><div class="modal-actions"><button class="btn small primary" onclick="downloadProposal()">Скачать PDF</button><button class="btn small" onclick="shareProposal()">Поделиться файлом</button><button class="btn small" onclick="copyProposal()">Копировать текст</button><button class="btn small" onclick="printProposal()">Печать</button><button class="btn small" onclick="closeProposal()">Закрыть</button></div></div><div class="proposal-paper" id="proposalPaper"></div></div></div>
+<div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Персональные условия</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Укажите персональную скидку для текущего расчёта. Она будет автоматически отражена в итоговой стоимости и коммерческом предложении.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="vendor/pdfmake.min.js" defer></script>
+<script src="vendor/vfs_fonts.js" defer></script>
+<script src="config.js" defer></script>
+<script src="app.js" defer></script>
+<script src="delivery.js" defer></script>
+</body>
+</html>

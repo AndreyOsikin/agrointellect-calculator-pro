@@ -1,0 +1,9 @@
+{
+  "name": "agrointellect-kerio-sender",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": { "start": "node --env-file=.env index.mjs", "test": "node --test ../tests/sender.test.mjs" },
+  "dependencies": { "nodemailer": "10.0.16" }
+}
