@@ -52,13 +52,13 @@ function recalc(){const t=totals();updatePaymentLabels(t.p);const any=productNam
 $('summaryMode').textContent=paymentMode==='annual'?'Предоплата за год':'Помесячная оплата';
 if(paymentMode==='annual'){
   $('mainMoneyLabel').textContent='Платёж за 12 месяцев';
-  $('monthlyPrice').textContent=fmt(t.period);
+  updateTotalDisplay(t.period);
   $('mainMoneySub').innerHTML=any?`<strong>${fmt(t.net)}</strong> / мес. в пересчёте`:'выберите продукты для расчёта';
   $('invoiceLabel').textContent='В пересчёте на месяц';
   $('invoiceTotal').textContent=fmt(t.net)+'/мес.';
 }else{
   $('mainMoneyLabel').textContent='Ежемесячный платёж';
-  $('monthlyPrice').textContent=fmt(t.net);
+  updateTotalDisplay(t.net);
   $('mainMoneySub').textContent=any?'оплата каждый месяц':'выберите продукты для расчёта';
   $('invoiceLabel').textContent='Платёж за текущий месяц';
   $('invoiceTotal').textContent=fmt(t.net);
@@ -66,6 +66,7 @@ if(paymentMode==='annual'){
 $('lineOnline').classList.toggle('hidden',!products.online);$('lineMusoft').classList.toggle('hidden',!products.musoft);$('lineMilk').classList.toggle('hidden',!products.milk);$('lineAI').classList.toggle('hidden',!(products.online&&t.aiUsers>0));$('lineDiscount').classList.toggle('hidden',!(t.discPct>0));
 $('onlineTotal').textContent=fmt(t.online)+'/мес.';$('musoftTotal').textContent=fmt(t.musoft)+'/мес.';$('milkTotal').textContent=fmt(t.milk)+'/мес.';$('aiTotal').textContent=fmt(t.ai)+'/мес.';$('discountTotal').textContent='−'+fmt(t.discount)+'/мес.';$('farmCount').textContent=farms.length;
 const saving=$('saving');const missing=(products.musoft||products.milk)&&farms.some(f=>!Number(f.herd));if(missing){saving.classList.add('show');saving.innerHTML='Для точного расчёта Мусофт / Учёта молока укажите поголовье на каждой площадке.'}else if(t.discPct>0){saving.classList.add('show');saving.innerHTML=`Индивидуальная скидка <b>${Math.round(t.discPct*100)}%</b> уменьшает стоимость на <b>${fmt(t.discount)}</b> в месяц.`}else{saving.classList.remove('show');saving.innerHTML=''}renderFarmPricesOnly()}
+function updateTotalDisplay(value){const el=$('monthlyPrice'),next=fmt(value);if(el.textContent===next)return;el.textContent=next;if(el.animate&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){el.getAnimations?.().forEach(animation=>animation.cancel());el.animate([{color:'#0a73f5'},{color:'#10233f'}],{duration:300,easing:'ease-out'})}}
 function renderFarmPricesOnly(){document.querySelectorAll('.farm-card').forEach((card,i)=>{const f=farms[i];if(!f)return;const parts=farmParts(f);updateFarmSystemPrices(card);const title=card.querySelector('.farm-title strong');if(title)title.textContent=f.name||('Ферма '+(i+1));const el=card.querySelector('.farm-price strong');if(el)el.textContent=fmt(parts.total);const mu=$('farmMu-'+i),mi=$('farmMi-'+i),cat=$('farmCat-'+i),tier=$('farmTier-'+i);if(mu)mu.textContent=f.herd?fmt(parts.musoft)+'/мес.':'—';if(mi)mi.textContent=f.herd?fmt(parts.milk)+'/мес.':'—';if(cat)cat.textContent=tierLabel(f.herd);if(tier)tier.textContent=f.herd?'Категория '+tierLabel(f.herd):'Укажите поголовье'})}
 function toast(text){const t=$('toast');t.textContent=text;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove('show'),2200)}
 function resetAll(){products={online:false,musoft:false,milk:false};['online','musoft','milk'].forEach(k=>{$('product-'+k).checked=false;$('card-'+k).classList.remove('active')});$('aiUsers').value=0;$('regularUsers').value=0;farms=[newFarm('Ферма 1')];setDiscount(0);setPayment('annual');updateSelection();$('usersSection').classList.add('hidden');renderFarms();recalc();window.scrollTo({top:0,behavior:'smooth'});toast('Новый расчёт создан')}
