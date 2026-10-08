@@ -13,7 +13,7 @@
 <div class="shell">
 <header class="topbar">
   <div class="brand"><div class="brand-logo"><img src="assets/logo.png" alt="АГРОИНТЕЛЛЕКТ"></div><div><strong>АГРОИНТЕЛЛЕКТ</strong><span>Калькулятор стоимости</span></div></div>
-  <div class="top-actions"><button class="discount-launch" id="discountLaunch" onclick="openDiscountModal()"><div><b>Скидка</b><span id="discountLaunchText">Не задана</span></div><div class="discount-chip" id="discountLaunchChip">0%</div></button><button class="btn" onclick="openProposal()">Коммерческое предложение</button><button class="btn primary" onclick="resetAll()">Новый расчёт</button></div>
+  <div class="top-actions"><button class="discount-launch" id="discountLaunch" onclick="openDiscountModal()"><div><b>Скидка</b><span id="discountLaunchText">Не задана</span></div><div class="discount-chip" id="discountLaunchChip">0%</div></button><button class="btn primary" onclick="resetAll()">Новый расчёт</button></div>
 </header>
 
 <section class="glass product-section">
@@ -27,15 +27,9 @@
 
 <div class="layout">
 <main class="stack">
-  <section class="glass section" id="clientSection">
-    <div class="section-head"><div class="section-title"><div class="section-icon">02</div><div><h2>Клиент и условия</h2><p>Данные используются в коммерческом предложении.</p></div></div></div>
-    <div class="form-grid">
-      <div class="field"><label for="clientName">Клиент</label><input id="clientName" maxlength="200" placeholder="Например, ООО «Агрофирма»" oninput="recalc()"></div>
-      <div class="field"><label for="contactName">Контактное лицо</label><input id="contactName" maxlength="200" placeholder="Имя, должность" oninput="recalc()"></div>
-      <div class="field"><label for="clientEmail">E-mail клиента</label><input id="clientEmail" maxlength="200" type="email" placeholder="client@company.ru" oninput="recalc()"></div>
-      <div class="field"><label for="managerName">Менеджер</label><input id="managerName" maxlength="200" placeholder="ФИО менеджера" oninput="recalc()"></div>
-      <div class="field full payment-field"><label>Формат оплаты</label><div class="payment-toggle"><button class="pay-option active" id="payAnnual" onclick="setPayment('annual')"><strong>Предоплата за год</strong><span>Базовая стоимость · платёж сразу за 12 месяцев</span></button><button class="pay-option" id="payMonthly" onclick="setPayment('monthly')"><strong>Помесячная оплата</strong><span>Онлайн‑ферма и ИИ +20% · оплата каждый месяц</span></button></div></div>
-    </div>
+  <section class="glass section" id="paymentSection">
+    <div class="section-head"><div class="section-title"><div class="section-icon">02</div><div><h2>Формат оплаты</h2><p>Выберите предоплату за год или помесячную оплату.</p></div></div></div>
+    <div class="payment-toggle"><button class="pay-option active" id="payAnnual" onclick="setPayment('annual')"><strong>Предоплата за год</strong><span>Платёж сразу за 12 месяцев</span></button><button class="pay-option" id="payMonthly" onclick="setPayment('monthly')"><strong>Помесячная оплата</strong><span>Онлайн‑ферма и ИИ +20% · оплата каждый месяц</span></button></div>
   </section>
 
   <section class="glass section" id="farmsSection">
@@ -47,7 +41,7 @@
   <section class="glass section hidden" id="usersSection">
     <div class="section-head"><div class="section-title"><div class="section-icon">04</div><div><h2>Пользователи Онлайн‑фермы</h2><p>Обычные аккаунты без ИИ не увеличивают стоимость.</p></div></div></div>
     <div class="counter-row"><div><strong>Пользователи с ИИ‑помощником</strong><span>Доступ к вопросам по данным фермы, сводкам и аналитическим разборам.</span></div><div class="stepper"><button onclick="step('aiUsers',-1)">−</button><input id="aiUsers" aria-label="Пользователи с ИИ-помощником" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('aiUsers',1)">+</button></div></div>
-    <div class="counter-row"><div><strong>Обычные пользователи</strong><span>Указываются для КП. Дополнительная стоимость — 0 ₽.</span></div><div class="stepper"><button onclick="step('regularUsers',-1)">−</button><input id="regularUsers" aria-label="Обычные пользователи" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('regularUsers',1)">+</button></div></div>
+    <div class="counter-row"><div><strong>Обычные пользователи</strong><span>Дополнительная стоимость — 0 ₽.</span></div><div class="stepper"><button onclick="step('regularUsers',-1)">−</button><input id="regularUsers" aria-label="Обычные пользователи" step="1" max="100000" type="number" min="0" value="0" oninput="recalc()"><button onclick="step('regularUsers',1)">+</button></div></div>
   </section>
 </main>
 
@@ -95,13 +89,8 @@
 </div>
 </div>
 
-<div class="modal" id="proposalModal" role="dialog" aria-modal="true" aria-label="Коммерческое предложение" tabindex="-1" onclick="modalBackdrop(event)"><div class="modal-card"><div class="modal-head"><strong>Коммерческое предложение</strong><div class="modal-actions"><button class="btn small primary" onclick="downloadProposal()">Скачать PDF</button><button class="btn small" onclick="shareProposal()">Поделиться файлом</button><button class="btn small" onclick="openSendDialog()">Отправить по почте</button><button class="btn small" onclick="copyProposal()">Копировать текст</button><button class="btn small" onclick="printProposal()">Печать</button><button class="btn small" onclick="closeProposal()">Закрыть</button></div></div><div class="proposal-paper" id="proposalPaper"></div></div></div>
-<div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Персональные условия</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Укажите персональную скидку для текущего расчёта. Она будет автоматически отражена в итоговой стоимости и коммерческом предложении.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
+<div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Персональные условия</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Укажите персональную скидку для текущего расчёта. Она будет автоматически отражена в итоговой стоимости.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="vendor/pdfmake.min.js" defer></script>
-<script src="vendor/vfs_fonts.js" defer></script>
-<script src="config.js" defer></script>
 <script src="app.js" defer></script>
-<script src="delivery.js" defer></script>
 </body>
 </html>

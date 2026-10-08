@@ -10,5 +10,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - run: node --check app.js && node --check delivery.js
+      - run: node --check app.js
       - run: node --test tests/calculation.test.cjs tests/sender.test.mjs
