@@ -1,6 +1,13 @@
 
 
 let paymentMode='annual';
+let tariffsUnlocked=false;
+// Interface lock only: a static page cannot enforce private access.
+const TARIFF_PIN='1234';
+function requestTariffs(event){if(tariffsUnlocked)return;event.preventDefault();$('tariffPin').value='';clearTariffPinError();showDialog('tariffPinModal');setTimeout(()=>$('tariffPin').focus(),60)}
+function guardTariffPanel(){if(!tariffsUnlocked&&$('tariffPanel').open)$('tariffPanel').open=false}
+function clearTariffPinError(){$('tariffPinError').textContent='';$('tariffPin').removeAttribute('aria-invalid')}
+function unlockTariffs(){if($('tariffPin').value!==TARIFF_PIN){$('tariffPinError').textContent='Неверный PIN-код. Попробуйте ещё раз.';$('tariffPin').setAttribute('aria-invalid','true');$('tariffPin').focus();$('tariffPin').select();return}tariffsUnlocked=true;$('tariffControls').disabled=false;$('tariffAccess').textContent='Открыто';hideDialog('tariffPinModal');$('tariffPin').value='';$('tariffPanel').open=true}
 let products={online:false,musoft:false,milk:false};
 let farms=[newFarm('Ферма 1')];
 function newFarm(name){return {id:Date.now()+Math.random(),name,herd:'',milkData:true,milking:true,feeding:true,extras:[]}}

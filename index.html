@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>АГРОИНТЕЛЛЕКТ — Калькулятор стоимости</title>
 <meta name="description" content="Калькулятор стоимости продуктов Агроинтеллект">
-<link rel="stylesheet" href="styles.css?v=systems-20261008">
+<link rel="stylesheet" href="styles.css?v=pin-20261008">
 <link rel="icon" href="assets/logo.png">
 <meta name="theme-color" content="#0a73f5">
 </head>
@@ -62,9 +62,10 @@
     <div class="fine">Расчёт обновляется автоматически по выбранным продуктам, площадкам и условиям оплаты.</div>
   </section>
 
-  <details class="glass settings">
-    <summary>Тарифные параметры</summary>
+  <details class="glass settings" id="tariffPanel" ontoggle="guardTariffPanel()">
+    <summary onclick="requestTariffs(event)">Тарифные параметры <span class="tariff-access" id="tariffAccess">PIN</span></summary>
     <div class="settings-body">
+      <fieldset id="tariffControls" disabled>
       <div class="settings-grid">
         <label>Онлайн‑ферма: минимум / ферма, ₽<input id="sBase" type="number" min="0" value="15000" oninput="settingsChanged()"></label>
         <label>Доильный зал, ₽<input id="sMilking" type="number" min="0" value="2500" oninput="settingsChanged()"></label>
@@ -83,6 +84,7 @@
         <div class="tariff-row"><span>&gt; 2000</span><input id="mu5" aria-label="Мусофт, поголовье более 2000" value="50000" type="number" min="0" oninput="settingsChanged()"><input id="mi5" aria-label="Учёт молока, поголовье более 2000" value="12000" type="number" min="0" oninput="settingsChanged()"></div>
       </div>
       <div class="settings-note">Параметры можно менять прямо в калькуляторе. Для Мусофт и отдельного Учёта молока используется тарифная категория по поголовью.</div>
+      </fieldset>
     </div>
   </details>
 </aside>
@@ -91,6 +93,17 @@
 
 <div class="modal" id="discountModal" role="dialog" aria-modal="true" aria-label="Индивидуальная скидка" tabindex="-1" onclick="discountBackdrop(event)" style="align-items:center"><div class="discount-card"><div class="discount-card-inner"><div class="discount-top"><div class="discount-symbol">%</div><button class="discount-close" onclick="closeDiscountModal()" aria-label="Закрыть">×</button></div><div class="discount-kicker">Условия расчёта</div><h2 class="discount-title">Индивидуальная скидка</h2><p class="discount-subtitle">Скидка применяется ко всему расчёту после подтверждения.</p><div class="discount-form"><label for="discountDraft">Размер скидки</label><div class="discount-input-wrap"><input id="discountDraft" type="number" min="0" max="50" step="1" value="0" inputmode="numeric"><span class="discount-suffix">%</span></div><div class="discount-help">Допустимое значение: от 0 до 50%.</div><input id="managerDiscount" type="hidden" value="0"><div class="discount-actions"><button class="btn discount-btn secondary" onclick="clearDiscount()">Без скидки</button><button class="btn discount-btn primary" onclick="applyDiscount()">Применить скидку</button></div></div></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="app.js?v=systems-20261008" defer></script>
+<div class="modal pin-modal" id="tariffPinModal" role="dialog" aria-modal="true" aria-labelledby="tariffPinTitle" tabindex="-1" onclick="if(event.target===this)hideDialog('tariffPinModal')">
+  <div class="discount-card"><div class="discount-card-inner">
+    <div class="discount-top"><div class="discount-symbol" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg></div><button class="discount-close" onclick="hideDialog('tariffPinModal')" aria-label="Закрыть">×</button></div>
+    <div class="discount-kicker">Тарифные параметры</div><h2 class="discount-title" id="tariffPinTitle">Введите PIN-код</h2><p class="discount-subtitle">Чтобы открыть настройки тарифов, введите четырёхзначный код.</p>
+    <form class="discount-form" onsubmit="event.preventDefault();unlockTariffs()">
+      <label for="tariffPin">PIN-код</label><div class="discount-input-wrap"><input id="tariffPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required autocomplete="off" aria-describedby="tariffPinError" oninput="clearTariffPinError()"></div>
+      <div class="pin-error" id="tariffPinError" role="alert"></div>
+      <div class="discount-actions"><button class="btn discount-btn primary" type="submit">Открыть параметры</button><button class="btn discount-btn secondary" type="button" onclick="hideDialog('tariffPinModal')">Отмена</button></div>
+    </form>
+  </div></div>
+</div>
+<script src="app.js?v=pin-20261008" defer></script>
 </body>
 </html>

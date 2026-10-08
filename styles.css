@@ -1679,3 +1679,10 @@ h1 {
 @media(max-width:1200px){.online-addons{grid-template-columns:1fr}}
 @media(max-width:600px){.discount-card-inner{padding:20px}.discount-title{font-size:24px}.pay-option.system{padding:14px}.online-addons{grid-template-columns:1fr}}
 @media(max-width:360px){.extra-wrap .extra-line{grid-template-columns:1fr}.extra-wrap .extra-line .btn{width:100%}}
+.settings fieldset{border:0;margin:0;padding:0;min-width:0}
+.tariff-access{margin-left:auto;margin-right:12px;font-size:12px;font-weight:800;color:var(--blue);border:1px solid var(--line2);border-radius:var(--control-radius);background:var(--surface-soft);padding:4px 8px}
+.pin-modal{align-items:center}
+.pin-modal .discount-input-wrap input{padding:0 16px;letter-spacing:.35em}
+.pin-error{color:#b42318;font-size:14px;line-height:1.4;margin-top:10px}
+.pin-error:empty{display:none}
+.pin-modal input[aria-invalid=true]{border-color:#b42318}
