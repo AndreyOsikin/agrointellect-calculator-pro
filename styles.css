@@ -1609,6 +1609,8 @@ h1 {
 @media(max-width:600px){.product-section .section-head{display:grid;grid-template-columns:1fr;gap:12px}.product-section .eyebrow{justify-self:start}}
 
 /* Compact product choices, with the global AI option alongside them. */
+.stepper input{appearance:textfield;-moz-appearance:textfield}
+.stepper input::-webkit-inner-spin-button,.stepper input::-webkit-outer-spin-button{appearance:none;-webkit-appearance:none;margin:0}
 .shell{max-width:1680px}
 .product-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .product-card{display:grid;grid-template-columns:minmax(0,1fr) 40px;grid-template-rows:auto 1fr;align-items:start;gap:8px;min-height:108px;padding:16px}
